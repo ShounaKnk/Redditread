@@ -9,8 +9,9 @@ def generate_remotion_code(csv_file):
 
     # Select a random post from the data
     post = random.choice(data)
-    title = post[0]
-    comments = post[1:]
+    author = post[0]
+    title = post[1]
+    comments = post[2:]
 
     # Generate the Remotion React code
     code = f"""
@@ -19,6 +20,7 @@ import {{getAudioDurationInSeconds}} from '@remotion/media-utils';
 import {{useCallback, useEffect, useState}} from 'react';
 import {{continueRender, delayRender}} from 'remotion';
 
+const AuthorText = {{fontSize: '28px', fontWeight: 'bold', textAlign: 'center', color: 'white', marginBottom: '10px'}};
 const PostTitle = {{fontSize: '24px', fontWeight: 'bold', textAlign: 'center', color: 'white'}};
 const CommentText = {{fontSize: '20px', textAlign: 'center', color: 'white'}};
 
@@ -41,6 +43,7 @@ const SpeechSynthesis = ({{text}}) => {{
 }};
 
 export const MyComposition = () => {{
+    const author = "{author}";
     const title = "{title}";
     const comments = {comments};
 
@@ -57,10 +60,17 @@ export const MyComposition = () => {{
 }};
 
 const MyComp = () => {{
+    const author = "{author}";
+    const title = "{title}";
+    const fullText = `${{author}} posted ${{title}}`;
+
     return (
         <div style={{{{backgroundColor: '#1a1a1a', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px'}}}}>
-            <h1 style={{PostTitle}}>{{title}}</h1>
-            <SpeechSynthesis text={{title}} />
+            <div>
+                <h2 style={{AuthorText}}>{{author}}</h2>
+                <h1 style={{PostTitle}}>{{title}}</h1>
+            </div>
+            <SpeechSynthesis text={{fullText}} />
             {{comments.map((comment, index) => (
                 <div key={{index}} style={{{{marginTop: '20px'}}}}>
                     <p style={{CommentText}}>{{comment}}</p>
@@ -75,7 +85,7 @@ const MyComp = () => {{
     return code
 
 # Usage
-csv_file = 'your_reddit_data.csv'  # Replace with your CSV file path
+csv_file = 'cmmnts.csv'  # Replace with your CSV file path
 remotion_code = generate_remotion_code(csv_file)
 
 # Save the generated code to a file

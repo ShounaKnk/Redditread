@@ -36,11 +36,10 @@ def get_posts(subreddit_name, num_posts=5, num_comments=2):
         top_comments.append(makeList(submission, comments, num_comments))
     return top_comments
 
-if __name__ == "__main__":
-    subreddit_name = "AskReddit"
-    posts = get_posts(subreddit_name)
-    fieldnames = ['author', 'title', 'comment 1', 'comment 2']
-    with open('cmmnts.csv', 'a') as csvfile: 
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        for post in posts:
-            writer.writerow(post)
+subreddit_name = "AskReddit"
+posts = get_posts(subreddit_name)
+fieldnames = ['author', 'title', 'comment 1', 'comment 2']
+with open('cmmnts.csv', 'a') as csvfile: 
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    for post in posts:
+        writer.writerow(post)
